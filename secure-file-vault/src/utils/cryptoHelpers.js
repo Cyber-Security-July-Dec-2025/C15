@@ -72,6 +72,35 @@ const hash = await crypto.subtle.digest('SHA-256', buffer);
 return new Uint8Array(hash);
 }
 
+// Import RSA Public Key from Hex
+export async function importRSAPublicKeyFromHex(hexKey) {
+  const keyBuffer = hexToArrayBuffer(hexKey);
+  return await window.crypto.subtle.importKey(
+    "spki",
+    keyBuffer,
+    {
+      name: "RSA-OAEP",
+      hash: "SHA-256",
+    },
+    true,
+    ["encrypt"]
+  );
+}
+
+// Import RSA Private Key from Hex
+export async function importRSAPrivateKeyFromHex(hexKey) {
+  const keyBuffer = hexToArrayBuffer(hexKey);
+  return await window.crypto.subtle.importKey(
+    "pkcs8",
+    keyBuffer,
+    {
+      name: "RSA-OAEP",
+      hash: "SHA-256",
+    },
+    true,
+    ["decrypt"]
+  );
+}
 
 export async function encryptWithAESGCM(aesKey, plaintextArrayBuffer) {
 const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -83,9 +112,14 @@ plaintextArrayBuffer
 return { iv: iv.buffer, ciphertext };
 }
 
-
+// AES-GCM Decrypt
+export async function decryptWithAESGCM(aesKey, ciphertext, iv) {
+  return await window.crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    aesKey,
+    ciphertext
+  );
 }
-
 
 export async function wrapAESKeyWithRSA(publicKey, aesKey) {
 // export raw AES, encrypt with RSA-OAEP
