@@ -1,0 +1,10 @@
+/* Ensures each page stretches to full screen */
+.page-wrapper {
+  min-height: 100vh;        /* Full viewport height */
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically */
+  background: #f9fafb;      /* light gray background */
+  padding: 2rem;
+  box-sizing: border-box;
+}
