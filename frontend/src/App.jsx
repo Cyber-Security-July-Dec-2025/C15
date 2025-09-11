@@ -44,6 +44,77 @@
 
 
 
+// import React, { useState } from "react";
+// import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
+// import AuthForm from "./components/AuthForm";
+// import Navbar from "./components/Navbar";
+// import FileUpload from "./components/FileUpload";
+// import DecryptForm from "./components/DecryptForm";
+// import KeyTools from "./components/KeyTools";
+
+// export default function App() {
+//   const [user, setUser] = useState(null);
+//   const [showSignup, setShowSignup] = useState(false);
+
+//   const handleAuthSuccess = (data) => {
+//     setUser(data.user || data); // save user
+//     if (data.token) {
+//       localStorage.setItem("token", data.token); // if backend sends JWT
+//     }
+//   };
+
+//   const handleLogout = () => {
+//     setUser(null);
+//     localStorage.removeItem("token");
+//   };
+
+//   return (
+//     <Router>
+//       {user && <Navbar onLogout={handleLogout} />}
+
+//       <Routes>
+//         {!user ? (
+//           <>
+//             {/* Login & Signup forms */}
+//             <Route
+//               path="/"
+//               element={
+//                 <>
+//                   <AuthForm
+//                     type={showSignup ? "signup" : "login"}
+//                     onSuccess={handleAuthSuccess}
+//                   />
+//                   <div className="text-center mt-4">
+//                     <button
+//                       className="text-indigo-600 underline"
+//                       onClick={() => setShowSignup(!showSignup)}
+//                     >
+//                       {showSignup
+//                         ? "Already have an account? Login"
+//                         : "Need an account? Sign Up"}
+//                     </button>
+//                   </div>
+//                 </>
+//               }
+//             />
+//             <Route path="*" element={<Navigate to="/" replace />} />
+//           </>
+//         ) : (
+//           <>
+//             {/* After login, protected routes */}
+//             <Route path="/file-upload" element={<FileUpload />} />
+//             <Route path="/decrypt" element={<DecryptForm />} />
+//             <Route path="/key-tools" element={<KeyTools />} />
+//             <Route path="*" element={<Navigate to="/file-upload" replace />} />
+//           </>
+//         )}
+//       </Routes>
+//     </Router>
+//   );
+// }
+
+
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
@@ -52,15 +123,16 @@ import Navbar from "./components/Navbar";
 import FileUpload from "./components/FileUpload";
 import DecryptForm from "./components/DecryptForm";
 import KeyTools from "./components/KeyTools";
+import "./styles/styles.css"; // custom CSS file
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
 
   const handleAuthSuccess = (data) => {
-    setUser(data.user || data); // save user
+    setUser(data.user || data);
     if (data.token) {
-      localStorage.setItem("token", data.token); // if backend sends JWT
+      localStorage.setItem("token", data.token);
     }
   };
 
@@ -76,33 +148,23 @@ export default function App() {
       <Routes>
         {!user ? (
           <>
-            {/* Login & Signup forms */}
             <Route
               path="/"
               element={
-                <>
-                  <AuthForm
-                    type={showSignup ? "signup" : "login"}
-                    onSuccess={handleAuthSuccess}
-                  />
-                  <div className="text-center mt-4">
-                    <button
-                      className="text-indigo-600 underline"
-                      onClick={() => setShowSignup(!showSignup)}
-                    >
-                      {showSignup
-                        ? "Already have an account? Login"
-                        : "Need an account? Sign Up"}
+                <div>
+                  <AuthForm type={showSignup ? "signup" : "login"} onSuccess={handleAuthSuccess} />
+                  <div className="toggle-auth">
+                    <button onClick={() => setShowSignup(!showSignup)}>
+                      {showSignup ? "Already have an account? Login" : "Need an account? Sign Up"}
                     </button>
                   </div>
-                </>
+                </div>
               }
             />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         ) : (
           <>
-            {/* After login, protected routes */}
             <Route path="/file-upload" element={<FileUpload />} />
             <Route path="/decrypt" element={<DecryptForm />} />
             <Route path="/key-tools" element={<KeyTools />} />
