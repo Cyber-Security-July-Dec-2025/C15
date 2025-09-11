@@ -251,8 +251,11 @@ export default function AuthForm({ type = "login", onSuccess }) {
       const url = isSignup ? "/signup" : "/login";
       const { data } = await API.post(url, payload);
 
+console.log("Auth success:", data);
+      
       if (onSuccess) onSuccess(data);
     } catch (err) {
+      console.error(err);
       setError(err.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
